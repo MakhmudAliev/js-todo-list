@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="output.css" />
+    <title>Document</title>
+  </head>
+  <body class="bg-gray-200 p-12">
+    <input
+      class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      id="add-task-input"
+      type="text"
+      placeholder="Enter task name"
+    />
+    <button
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      data-target="addButton"
+    >
+      Add task
+    </button>
+
+    <h2 class="mt-8 text-4xl">Tasks:</h2>
+    <div class="mt-2" id="todoList"></div>
+    <script src="script.js"></script>
+  </body>
+</html>
