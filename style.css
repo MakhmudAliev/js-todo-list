@@ -7,3 +7,7 @@
   text-decoration: line-through;
   text-decoration-color: #a0aec0;
 }
+
+.nostrike {
+  text-decoration: none !important;
+}

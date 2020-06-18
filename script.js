@@ -24,11 +24,23 @@ const renderListOfTasks = (data) => {
   for (let item of data) {
     let listItem = document.createElement("div");
     listItem.classList.add("mt-1");
+    // listItem.classList.add(`task${item.id}`);
 
-    listItem.innerHTML = `<label><input type='checkbox'> ${item.title}</label>`;
-    if (item.completed) {
-      listItem.classList.add("completed");
-    }
+    listItem.innerHTML = `
+      <label class='task${item.id} ${
+      item.completed ? "completed" : ""
+    }'><input type='checkbox' ${
+      item.completed ? "checked" : ""
+    } data-attribute="task${item.id}" 
+        id='${item.id}'
+        class="checkbox" 
+        onchange="toggleTask(${item.id})" 
+        > 
+          ${item.title}
+      </label>
+      <span class='ml-2 text-blue-600 nostrike'><a href='' class='nostrike'>edit</a></span>
+      <span class='ml-2 text-red-600 nostrike'><a href=''>x delete</a></span>
+      `;
     divList.append(listItem);
   }
 };
@@ -36,28 +48,44 @@ const renderListOfTasks = (data) => {
 // =================================== adding tasks to the list
 const addTaskToList = () => {
   const task = document.querySelector("#add-task-input").value;
-
+  document.querySelector("#add-task-input").value = "";
   if (!task) {
     alert("Task is empty");
     return false;
   }
 
+  let ids = tasks.map((item) => item.id);
+  let maxId = Math.max(...ids);
+
   let newTask = {
     userId: 1,
-    id: 21,
+    id: maxId + 1,
     title: task,
+    completed: false,
   };
+
   tasks.unshift(newTask);
   renderListOfTasks(tasks);
+  console.log(tasks);
+};
+
+// ===================================
+const toggleTask = (id) => {
+  // strike task
+  const assosiatedTask = document.getElementsByClassName(`task${id}`);
+  assosiatedTask[0].classList.toggle("completed");
+
+  // change completed property of task
+  let itemToChange = tasks.find((item) => item.id === id);
+  itemToChange.completed = !itemToChange.completed;
 };
 
 // =================================== START
-let tasks;
+let tasks = [];
 
 getListFromAPI().then((response) => {
   renderListOfTasks(response);
   tasks = response;
-  // console.log(tasks);
 });
 
 const addButton = document.querySelector('[data-target="addButton"]');
