@@ -39,7 +39,9 @@ const renderListOfTasks = (data) => {
           ${item.title}
       </label>
       <span class='ml-2 text-blue-600 nostrike'><a href='' class='nostrike'>edit</a></span>
-      <span class='ml-2 text-red-600 nostrike'><a href=''>x delete</a></span>
+      <span class='ml-2 text-red-600 nostrike'><a href='#' onclick='deleteTask(${
+        item.id
+      })'>x delete</a></span>
       `;
     divList.append(listItem);
   }
@@ -78,6 +80,19 @@ const toggleTask = (id) => {
   // change completed property of task
   let itemToChange = tasks.find((item) => item.id === id);
   itemToChange.completed = !itemToChange.completed;
+};
+// ===================================
+const deleteTask = (id) => {
+  if (confirm("You sure you wanna delete this task?")) {
+    let itemToDelete = tasks.findIndex((item) => item.id === id);
+  
+    if (itemToDelete >= 0) {
+      tasks.splice(itemToDelete, 1);
+      renderListOfTasks(tasks);
+    }
+  } else {
+    return false;
+  }
 };
 
 // =================================== START
