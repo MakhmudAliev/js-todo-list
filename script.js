@@ -90,8 +90,11 @@ const toggleTask = (id) => {
 const editTask = (id) => {
   let currentTask = tasks.find((item) => item.id === id);
   let newTaskName = prompt("Enter new name", currentTask.title);
-  currentTask.title = newTaskName;
-  renderListOfTasks(tasks);
+
+  if (newTaskName !== null) {
+    currentTask.title = newTaskName;
+    renderListOfTasks(tasks);
+  }
 };
 
 // ===================================
