@@ -24,24 +24,29 @@ const renderListOfTasks = (data) => {
   for (let item of data) {
     let listItem = document.createElement("div");
     listItem.classList.add("mt-1");
-    // listItem.classList.add(`task${item.id}`);
 
     listItem.innerHTML = `
-      <label class='task${item.id} ${
-      item.completed ? "completed" : ""
-    }'><input type='checkbox' ${
-      item.completed ? "checked" : ""
-    } data-attribute="task${item.id}" 
+      <span onmouseover='showControls(${item.id})' 
+      onmouseout='hideControls(${item.id})'>
+      <label class='task${item.id} ${item.completed ? "completed" : ""}' >
+      <input type='checkbox' ${
+        item.completed ? "checked" : ""
+      } data-attribute="task${item.id}" 
         id='${item.id}'
         class="checkbox" 
         onchange="toggleTask(${item.id})" 
         > 
           ${item.title}
       </label>
-      <span class='ml-2 text-blue-600 nostrike'><a href='' class='nostrike'>edit</a></span>
-      <span class='ml-2 text-red-600 nostrike'><a href='#' onclick='deleteTask(${
-        item.id
-      })'>x delete</a></span>
+      <span class='hidden controls${item.id}'>
+        <span class='ml-2 text-blue-600 nostrike'><a href='#' onclick='editTask(${
+          item.id
+        })'>edit</a></span>
+        <span class='ml-2 text-red-600 nostrike'><a href='#' onclick='deleteTask(${
+          item.id
+        })'>x delete</a></span>
+      </span>
+      </span>
       `;
     divList.append(listItem);
   }
@@ -68,7 +73,6 @@ const addTaskToList = () => {
 
   tasks.unshift(newTask);
   renderListOfTasks(tasks);
-  console.log(tasks);
 };
 
 // ===================================
@@ -81,11 +85,20 @@ const toggleTask = (id) => {
   let itemToChange = tasks.find((item) => item.id === id);
   itemToChange.completed = !itemToChange.completed;
 };
+
+// ===================================
+const editTask = (id) => {
+  let currentTask = tasks.find((item) => item.id === id);
+  let newTaskName = prompt("Enter new name", currentTask.title);
+  currentTask.title = newTaskName;
+  renderListOfTasks(tasks);
+};
+
 // ===================================
 const deleteTask = (id) => {
   if (confirm("You sure you wanna delete this task?")) {
     let itemToDelete = tasks.findIndex((item) => item.id === id);
-  
+
     if (itemToDelete >= 0) {
       tasks.splice(itemToDelete, 1);
       renderListOfTasks(tasks);
@@ -93,6 +106,23 @@ const deleteTask = (id) => {
   } else {
     return false;
   }
+};
+
+// ===================================
+const handleAddInput = (key) => {
+  if (key === "Enter") {
+    addTaskToList();
+  }
+};
+
+// ===================================
+const hideControls = (id) => {
+  document.querySelector(`.controls${id}`).classList.add("hidden");
+};
+
+// ===================================
+const showControls = (id) => {
+  document.querySelector(`.controls${id}`).classList.remove("hidden");
 };
 
 // =================================== START

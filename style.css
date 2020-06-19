@@ -11,3 +11,12 @@
 .nostrike {
   text-decoration: none !important;
 }
+
+label {
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
